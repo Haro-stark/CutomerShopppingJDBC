@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Customer implements CustomerInterface {
     private boolean isTelenorUser;
-    private double totalPrice;
+    private double sumAmount;
     private boolean orderCompleted;
     @Override
     public void orderItems() throws SQLException {
@@ -29,6 +29,15 @@ public class Customer implements CustomerInterface {
         }
         this.orderCompleted = true;
         this.updateOrderStatus();
+
+        System.out.println("Are you a telenor customer? (y/n): ");
+        char customerType = sc.next().charAt(0);
+        if(customerType == 'y' || customerType == 'Y'){
+            isTelenorUser = true;
+        }
+
+        this.printReciept(orderId);
+
     }
 
     @Override
@@ -79,4 +88,25 @@ public class Customer implements CustomerInterface {
         DatabaseConnection.endConnection(connection);
         return orderID;
     }
+
+    @Override
+    public void printReciept(int orderId) throws SQLException {
+        Connection connection = DatabaseConnection.getConnection();
+        Statement statement = connection.createStatement();
+        String query = "Select ITEMS.NAME , ITEMS.UNITPRICE , ORDERITEMS.QUANTITY , ORDERITEMS.TOTALPRICE from ITEMS, ORDERITEMS, ORDERS where ORDERITEMS.OrderId = ORDERS.ORDERID and Items.itemId = OrderItems.ItemID and orderItems.orderid = "+21;
+        ResultSet rs = statement.executeQuery(query);
+
+        System.out.println("Items\tname\tunit price\tQuantity\ttotal price");
+        while(rs.next()){
+            String name = rs.getString("name");
+            double unitPrice = rs.getDouble("unitprice");
+            int quantity = rs.getInt("quantity");
+            double total = rs.getDouble("totalPrice");
+
+        }
+
+
+    }
+
+
 }
