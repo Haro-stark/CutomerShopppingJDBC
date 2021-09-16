@@ -44,6 +44,7 @@ public class Items implements ItemsInterface {
         int unitPrice=0;
         while(resultSet.next()){
             unitPrice = resultSet.getInt(1);
+
         }
 
         DatabaseConnection.endConnection(connection);
